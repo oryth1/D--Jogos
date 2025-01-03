@@ -1,0 +1,75 @@
+
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+-- Configuração da interface
+local Window = Rayfield:CreateWindow({
+    Name = "Xethus Hub | Universal BR | Dandy's World", 
+    LoadingTitle = "Carregando Dandy's World",
+    LoadingSubtitle = "Por favor, aguarde...",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "OryhHubConfigs", -- Pasta para salvar configurações
+        FileName = "UniversalScript"
+    },
+    Discord = {
+        Enabled = false,
+        Invite = "", -- Adicione um convite do Discord se necessário
+        RememberJoins = true
+    },
+    KeySystem = false -- Sistema de chave desativado
+})
+
+-- Função para criar botões que executam scripts
+local function AddScriptButton(tab, name, url)
+    tab:CreateButton({
+        Name = name,
+        Callback = function()
+            loadstring(game:HttpGet(url))()
+            Rayfield:Notify({
+                Title = "Oryh Hub",
+                Content = name .. " carregado com sucesso!",
+                Duration = 5
+            })
+        end
+    })
+end
+
+-- >[Início]<
+
+local InicioTab = Window:CreateTab("Dandy's World Scripts")
+
+AddScriptButton(InicioTab, "Soup Hub", "https://raw.githubusercontent.com/Soup182/Soup-Hub-Dandy-s-World-Hub-/refs/heads/main/Dw%20Soup%20Hub.lua")
+AddScriptButton(InicioTab, "Mox Hub", "https://raw.githubusercontent.com/ApparentlySpooks/moxhubV3/refs/heads/main/dandys%20world.txt")
+AddScriptButton(InicioTab, "Hex Hub", "https://pastebin.com/raw/CdzMwcZ2")
+AddScriptButton(InicioTab, "World Hub", "https://pastebin.com/raw/QQt4pVtu")
+AddScriptButton(InicioTab, "Orion Hub", "https://raw.githubusercontent.com/Bac0nHck/Scripts/main/Dandy's%20World")
+
+
+-- >[Discord]<
+
+local DiscordTab = Window:CreateTab("Discord")
+
+-- Adicione os scripts desejados aqui
+AddScriptButton(DiscordTab, "Script Exemplo", "https://example.com/script.lua")
+
+-- Novo botão para gerar e copiar o link da senha
+local ButtonGenerateLink = DiscordTab:CreateButton({
+    Name = "Discord Community",
+    Callback = function()
+        local link = "https://discord.gg/UTchgb5sY4" -- Substitua com o link desejado
+        setclipboard(link)  -- Copia o link para a área de transferência
+        Rayfield:Notify({
+            Title = "Link copiado",
+            Content = "O link do Discord foi copiado para sua área de transferência!",
+            Duration = 5,
+        })
+        print("Link copiado para a área de transferência: " .. link)
+    end,
+})
+
+-- Mensagem inicial
+Rayfield:Notify({
+    Title = "Dandy's World",
+    Content = "Carregando scripts...",
+    Duration = 5
+})  
