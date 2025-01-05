@@ -1,0 +1,162 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+-- Configuração da interface
+local Window = Rayfield:CreateWindow({
+    Name = "Xethus Hub | Universal BR | Dress To Impress", 
+    LoadingTitle = "Carregando Dress To Impress",
+    LoadingSubtitle = "Gerando Scripts..."
+})
+
+-- Caminho para a pasta de configurações
+local ConfigFolder = "Dress To Impress"
+if not isfolder(ConfigFolder) then
+    makefolder(ConfigFolder)
+end
+
+local ConfigFile = ConfigFolder .. "/Dress To Impress.json"
+
+-- Variáveis globais
+local SelectedScript = nil
+local AutoExecute = false
+local Scripts = {
+
+    ["Tora Isme Hub"] = "https://raw.githubusercontent.com/ToraScript/Script/main/DressToImpress",
+    ["Nut Hub"] = "https://raw.githubusercontent.com/01iq/me/refs/heads/main/DressToImpress",
+    ["Neuron Hub"] = "https://raw.githubusercontent.com/Yumiara/Python/refs/heads/main/DTI.py",
+    ["Glowxfy Hub"] = "https://raw.githubusercontent.com/Glowxfy/dti-scripts/refs/heads/main/money%20autofarm",
+    ["DTI Hub"] = "https://raw.githubusercontent.com/hellohellohell012321/DTI-GUI-V2/main/dti_gui_v2.lua",
+    ["Tari Hub"] = "https://raw.githubusercontent.com/DeNyima/TarikHUB/refs/heads/main/DressToImpress",
+    ["Simplest Hub"] = "https://raw.githubusercontent.com/pcallskeleton/simplest/main/simplicity.lua",
+    
+}
+
+-- Função para salvar configurações
+local function SaveSettings()
+    writefile(ConfigFile, game:GetService("HttpService"):JSONEncode({
+        SelectedScript = SelectedScript,
+        AutoExecute = AutoExecute
+    }))
+end
+
+-- Função para carregar configurações
+local function LoadSettings()
+    if isfile(ConfigFile) then
+        local settings = game:GetService("HttpService"):JSONDecode(readfile(ConfigFile))
+        SelectedScript = settings.SelectedScript
+        AutoExecute = settings.AutoExecute
+    end
+end
+
+-- Carregar configurações ao iniciar
+LoadSettings()
+
+-- Criar a aba "Scripts"
+local TabScripts = Window:CreateTab("Scripts", "Scroll")
+
+-- Toggle para Auto-Execute
+TabScripts:CreateToggle({
+    Name = "Auto-Execute",
+    CurrentValue = AutoExecute,
+    Callback = function(value)
+        AutoExecute = value
+        SaveSettings()
+        Rayfield:Notify({
+            Title = "Configuração Atualizada",
+            Content = AutoExecute and "Auto-Execute ativado" or "Auto-Execute desativado",
+            Duration = 5
+        })
+    end
+})
+
+-- Função para adicionar botões com scripts
+local function AddScriptButton(tab, name, url)
+    tab:CreateButton({
+        Name = name,
+        Callback = function()
+            SelectedScript = url
+            loadstring(game:HttpGet(url))()
+            SaveSettings()
+            Rayfield:Notify({
+                Title = "Xethus Hub",
+                Content = name .. " carregado com sucesso!",
+                Duration = 5
+            })
+        end
+    })
+end
+
+-- Adicionar botões para os Scripts
+for name, url in pairs(Scripts) do
+    AddScriptButton(TabScripts, name, url)
+end
+
+-- Execução automática no início, se ativado
+if AutoExecute and SelectedScript then
+    local success, errorMsg = pcall(function()
+        loadstring(game:HttpGet(SelectedScript))()
+    end)
+    if success then
+        Rayfield:Notify({
+            Title = "Auto-Execute",
+            Content = "Script executado automaticamente com sucesso!",
+            Duration = 5
+        })
+    else
+        Rayfield:Notify({
+            Title = "Erro no Auto-Execute",
+            Content = "Erro ao executar o script: " .. errorMsg,
+            Duration = 5
+        })
+    end
+end
+
+-- Criar a aba "Admins" com o ícone "icon-cable"
+local AdminTab = Window:CreateTab("Admins", "expand")
+
+-- Adicionar botões para scripts de Admin
+AddScriptButton(AdminTab, "</> Aimbot", "https://raw.githubusercontent.com/Yousuck780/troll-x/main/ahhhh")
+AddScriptButton(AdminTab, "</> Graficos Realistas", "https://raw.githubusercontent.com/Flybobbb/robloxscripts/main/rtx.lua")
+AddScriptButton(AdminTab, "</> Infinite Yield", "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source")
+AddScriptButton(AdminTab, "</> Retirar Texturas", "https://rawscripts.net/raw/Universal-Script-antilag-15462")
+AddScriptButton(AdminTab, "</> Servidor Privado", "https://pastebin.com/raw/A4r1pHJY")
+AddScriptButton(AdminTab, "</> TP Tools", "https://pastebin.com/raw/qysTtrJD")
+
+-- Criar a aba "Redes Sociais"
+local SocialTab = Window:CreateTab("Redes Sociais","link")
+
+-- Adicionar botões para redes sociais
+SocialTab:CreateButton({
+    Name = "Discord Community",
+    Callback = function()
+        setclipboard("https://discord.gg/UTchgb5sY4")
+    end
+})
+
+SocialTab:CreateButton({
+    Name = "Instagram para Contato",
+    Callback = function()
+        setclipboard("https://www.instagram.com/hidleywilliam")
+    end
+})
+
+SocialTab:CreateButton({
+    Name = "Canal no YouTube",
+    Callback = function()
+        setclipboard("https://www.youtube.com/channel/UCX2N85bLl1JwWsb9wQ1NxHg")
+    end
+})
+
+SocialTab:CreateButton({
+    Name = "Executores Atualizados",
+    Callback = function()
+        setclipboard("https://beacons.ai/ethus.oi")
+    end
+})
+
+
+-- Notificação inicial
+Rayfield:Notify({
+    Title = "Xethus Hub",
+    Content = "Scripts atualizados com sucesso!",
+    Duration = 5
+})
